@@ -7,12 +7,12 @@ from start import start_menu
 
 def main():
     pygame.init()
-    screen = pygame.display.set_mode((800, 600))
+    screen = pygame.display.set_mode((1250, 1250 * (9 / 16)))
     clock = pygame.time.Clock()
 
     result = start_menu(screen, clock)
     if result == "start":
-        print("[🎮 본게임 진입]")
+        print("[본게임 진입]")
         # run_game(screen, clock) <- 나중에 게임 본편 함수 호출
 
 if __name__ == "__main__":
