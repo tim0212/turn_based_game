@@ -1,45 +1,19 @@
-import pygame, sys
+# main.py
+import pygame
+import sys
+from start import start_menu
 
-def start_init():
-    global screen, clock, caption
+# from game_core import run_game  # 본편 연결 예정
 
-    pygame.display.init()
-    pygame.font.init()
-
-    try:
-      pygame.mixer.init()
-      pygame.mixer.music.load("sound\Coin 1.mp3")
-      pygame.mixer.music.play()
-    except:
-      print("사운드 로드 실패")
-
-    screen = pygame.display.set_mode((1250, 1250 * (9 / 16)))
+def main():
+    pygame.init()
+    screen = pygame.display.set_mode((800, 600))
     clock = pygame.time.Clock()
-    caption = pygame.display.set_caption("turn_game")
 
-start_init()
+    result = start_menu(screen, clock)
+    if result == "start":
+        print("[🎮 본게임 진입]")
+        # run_game(screen, clock) <- 나중에 게임 본편 함수 호출
 
-key_actions = {
-    pygame.K_0: lambda: print("0번 키 눌림"),
-    pygame.K_1: lambda: print("1번 키 눌림"),
-    pygame.K_2: lambda: print("2번 키 눌림"),
-}
-
-def keyboard_event():
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE):
-            pygame.quit()
-            sys.exit((lambda d: print(d))("was exited code by safty, later this will be made to save function"))
-
-        if event.type == pygame.KEYDOWN:
-            action = key_actions.get(event.key)
-            if action:
-                action()
-
-while True:
-    keyboard_event()
-
-    pygame.display.flip()
-
-    screen.fill((30, 30, 30))
-    clock.tick(60)
+if __name__ == "__main__":
+    main()
