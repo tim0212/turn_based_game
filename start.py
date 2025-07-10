@@ -1,6 +1,6 @@
 """
 git add .
-git commit -m ""
+git commit -m "set"
 git push
 """
 
@@ -16,7 +16,7 @@ def start_menu(screen, clock):
     selected_index = 0
 
     running = True
-      
+
     while running:
         screen.fill((20, 20, 30))
         title = font.render("TURN-BASED GAME", True, (255, 255, 255))
