@@ -10,7 +10,7 @@ scene = "start_menu"
 # 매 프레임 루프
 while True:
   if scene == "start_menu":
-    result = start.start_menu(scene) # exit or start
+    result = start.start_menu(scene) # quit or start
 
     if result == "start":
       scene = "main"
@@ -24,7 +24,7 @@ while True:
       scene = "exit"
   #
   if scene == "battle":
-    result = game.battle(scene) # main or quit
+    result = game.battle(scene) # main
 
     if result == "main":
       scene = "main"
