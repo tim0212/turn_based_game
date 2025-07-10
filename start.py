@@ -5,11 +5,11 @@ git push
 """
 
 # start_screen.py
-from settings import *
+import screen
 import pygame
 import sys
 
-def start_menu(screen, clock):
+def start_menu():
     pygame.font.init()
     font = pygame.font.SysFont(None, 48)
 
@@ -21,7 +21,7 @@ def start_menu(screen, clock):
     while running:
         screen.fill((20, 20, 30))
         title = font.render("TURN-BASED GAME", True, (255, 255, 255))
-        screen.blit(title, (x / 2, y / 2))
+        screen.blit(title, (screen.x / 2, screen.y / 2))
 
         for i, option in enumerate(menu_options):
             color = (255, 255, 0) if i == selected_index else (150, 150, 150)
@@ -46,5 +46,4 @@ def start_menu(screen, clock):
                     elif selected_index == 1:
                         pygame.quit(); sys.exit()
 
-        pygame.display.flip()
-        clock.tick(60)
+        screen.update()

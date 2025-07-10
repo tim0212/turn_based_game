@@ -1,21 +1,10 @@
-# main.py
-import pygame, sys
-from settings import *
-from start import start_menu
+import screen
+import pygame
 
-# from game_core import run_game  # 본편 연결 예정
+pygame.init()
 
-class Main:
-  def __init__(self):
-    init() # in settings
-
-  def run(self):
-    result = start_menu(self.screen, self.clock)
-
-    if result == "start":
-      print("[본게임 진입]")
-      # run_game(screen, clock) <- 나중에 게임 본편 함수 호출
-
-if __name__ == "__main__":
-    main = Main()
-    main.run()
+# 예: 중앙에 글자 띄우기
+font = pygame.font.SysFont(None, 48)
+text = font.render("Hello", True, (255, 255, 255))
+rect = text.get_rect(center=(screen.cx, screen.cy))
+screen.blit(text, rect)
