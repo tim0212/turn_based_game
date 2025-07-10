@@ -1,5 +1,10 @@
-# start_screen.py
+"""
+git add .
+git commit -m ""
+git push
+"""
 
+# start_screen.py
 import pygame
 import sys
 
@@ -11,6 +16,7 @@ def start_menu(screen, clock):
     selected_index = 0
 
     running = True
+      
     while running:
         screen.fill((20, 20, 30))
         title = font.render("TURN-BASED GAME", True, (255, 255, 255))
