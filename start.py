@@ -1,52 +1,10 @@
-"""
-git add .
-git commit -m "set"
-git push
-"""
-
-# start_screen.py
+import pygame, sys
 import screen
-import pygame
-import sys
 
-def start_menu():
-    pygame.font.init()
-    font = pygame.font.SysFont(None, 48)
+def main(scence):
+  for event in pygame.event.get():
+    if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE):
+      scence = "exit"
+      return scence
 
-    menu_options = ["▶ Start Game", "❌ Exit"]
-    selected_index = 0
-
-    running = True
-
-    while running:
-        screen.screen.fill((20, 20, 30))
-        title = font.render("TURN-BASED GAME", True, (255, 255, 255))
-        screen.screen.blit(title, (screen.x / 2, screen.y / 2))
-
-        for i, option in enumerate(menu_options):
-            color = (255, 255, 0) if i == selected_index else (150, 150, 150)
-            text = font.render(option, True, color)
-            screen.screen.blit(text, (300, 220 + i * 60))
-
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                screen.exit()
-
-            elif event.type == pygame.KEYDOWN:
-
-                if event.key == pygame.K_UP:
-                    selected_index = (selected_index - 1) % len(menu_options)
-                    print(selected_index)
-
-                elif event.key == pygame.K_DOWN:
-                    selected_index = (selected_index + 1) % len(menu_options)
-
-                elif event.key == pygame.K_RETURN:
-                    if selected_index == 0:
-                        screen.screen.fill((20, 20, 30))
-                        return "start"
-
-                    elif selected_index == 1:
-                        screen.exit()
-
-        screen.update()
+  screen.update()
