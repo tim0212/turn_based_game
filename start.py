@@ -5,9 +5,8 @@ git push
 """
 
 # start_screen.py
+import pygame, sys
 import screen
-import pygame
-import sys
 
 def start_menu(scence):
     pygame.init()

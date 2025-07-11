@@ -1,5 +1,5 @@
 import pygame
-import screen, start, game
+import screen, start, game, main_menu
 
 pygame.init()
 screen.init()
@@ -16,7 +16,7 @@ while True:
       scene = "main"
   #
   if scene == "main":
-    result = game.main(scene) # battle or quit
+    result = main_menu.main(scene) # battle or quit
 
     if result == "battle":
       scene = "battle"
