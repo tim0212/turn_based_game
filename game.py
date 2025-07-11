@@ -17,6 +17,6 @@ def battle(scence):
 
     # 예시: 전투 텍스트
     screen.screen.fill((10, 10, 20))
-    text.render((screen.cx, screen.cy), "BATTLE MODE", True, ())
+    text.render((screen.cx, screen.cy), "BATTLE MODE", True, (0, 0, 0))
 
     screen.update()

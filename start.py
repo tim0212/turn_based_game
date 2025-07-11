@@ -1,6 +1,6 @@
 # start_screen.py
 import pygame, sys
-import screen
+import screen, text
 
 def start_menu(scence):
     pygame.init()
@@ -17,13 +17,12 @@ def start_menu(scence):
     while scence == "start_menu":
         screen.init_display()
 
-        title = font.render("TURN-BASED GAME", True, (255, 255, 255))
-        screen.screen.blit(title, (screen.x / 2, screen.y / 2 - fy))
+        text.render((screen.x / 2, screen.y / 2 - fy), "TURN-BASED GAME", True, (255, 255, 255), centerpos="topleft")
 
         for i, option in enumerate(menu_options):
             color = (255, 255, 0) if i == selected_index else (150, 150, 150)
-            text = font.render(option, True, color)
-            screen.screen.blit(text, (screen.x / 4, screen.y / 2 - fy * 2 + i * 60))
+            text1 = font.render(option, True, color)
+            screen.screen.blit(text1, (screen.x / 4, screen.y / 2 - fy * 2 + i * 60))
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE):
@@ -39,7 +38,7 @@ def start_menu(scence):
 
                 elif event.key == pygame.K_RETURN:
                     if selected_index == 0:
-                        screen.screen.fill((20, 20, 30))
+                        screen.fill()
                         return "start"
 
                     elif selected_index == 1:

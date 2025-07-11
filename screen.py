@@ -33,7 +33,7 @@ def init(width=1250, height=None, caption="Turn Game", fps_=60):
 
 def init_display():
   """scence로 화면을 이동시에 리셋하는 함수"""
-  draw_vertical_gradient(screen, (20, 20, 50), (0, 0, 0))
+  fill(screen, fill=(0, 0, 0))
 
 def update():
   """코드 활성화 (flip)"""
@@ -46,22 +46,30 @@ def exit():
     pygame.quit()
     sys.exit()
 
-def draw_vertical_gradient(surface, top_color, bottom_color):
+def fill(top_color : tuple = (255, 255, 255), bottom_color : tuple = (0, 0, 0), fill : tuple = None):
   """_summary_
 
+  단색은 fill = (0, 0, 0)식으로 적어라
+  그라데이션은 top and bottom_color을 =로 사용
+
   Args:
-      surface (_type_): display를 정해야함 ex) >>> screen.screen
-      top_color (_type_): 가장 위의 색을 지정 ex) >>> (20, 20, 50)
-      bottom_color (_type_): 가장 아래의 색을 지정 ex) >>> (0, 0, 0)
+      top_color (_type_): 가장 위의 색을 지정 ex) >>> (20, 20, 50)(남색)
+      bottom_color (_type_): 가장 아래의 색을 지정 ex) >>> (0, 0, 0)(검은색)
+      fill (bool): fill을 사용하고 싶으면 사용 ex) (0, 0, 0)(검은색)
 
   Examples:
     >>> draw_vertical_gradient(screen.screen, (20, 20, 50), (0, 0, 0))
+    >>> screen.fill(fill = True, rgb = (0, 0, 0))
   """
-  height = surface.get_height()
-  width = surface.get_width()
-  for y in range(height):
-    ratio = y / height
-    r = int(top_color[0] * (1 - ratio) + bottom_color[0] * ratio)
-    g = int(top_color[1] * (1 - ratio) + bottom_color[1] * ratio)
-    b = int(top_color[2] * (1 - ratio) + bottom_color[2] * ratio)
-    pygame.draw.line(surface, (r, g, b), (0, y), (width, y))
+
+  try:
+    screen.fill(fill)
+  except:
+    height = screen.get_height()
+    width = screen.get_width()
+    for y in range(height):
+      ratio = y / height
+      r = int(top_color[0] * (1 - ratio) + bottom_color[0] * ratio)
+      g = int(top_color[1] * (1 - ratio) + bottom_color[1] * ratio)
+      b = int(top_color[2] * (1 - ratio) + bottom_color[2] * ratio)
+      pygame.draw.line(screen, (r, g, b), (0, y), (width, y))
