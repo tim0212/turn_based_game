@@ -1,5 +1,5 @@
 import pygame
-import screen
+import screen, text
 
 def battle(scence):
   while scence == "battle":
@@ -13,11 +13,10 @@ def battle(scence):
         if event.key == pygame.K_ESCAPE:
           return "main"
 
+
+
     # 예시: 전투 텍스트
-    font = pygame.font.SysFont(None, 48)
-    text = font.render("BATTLE MODE", True, (255, 100, 100)) #⚔️
-    rect = text.get_rect(center=(screen.cx, screen.cy))
     screen.screen.fill((10, 10, 20))
-    screen.screen.blit(text, rect)
+    text.render((screen.cx, screen.cy), "BATTLE MODE", True, (255, 100, 100))
 
     screen.update()
