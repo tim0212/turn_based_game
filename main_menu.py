@@ -1,18 +1,17 @@
+# game.py
 import pygame
-import screen, text
+import screen
+import text
 
-def main(scence):
-  screen.init_display()
-  while scence == "main":
+def update(events):
+  for event in events:
+    if event.type == pygame.QUIT:
+      return "quit"
+    elif event.type == pygame.KEYDOWN:
+      if event.key == pygame.K_ESCAPE:
+        return "main"
 
-    for event in pygame.event.get():
-      if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE):
-        return "quit"
+  screen.fill((10, 10, 20))
+  text.render((screen.cx, screen.cy), "BATTLE MODE", True, (255, 100, 100))
 
-      if (event.type == pygame.KEYDOWN and event.key == pygame.K_1):
-        return "battle"
-
-    # 화면 유지용
-    text.render((screen.cx, screen.cy), "main", True, (255, 255, 255))
-
-    screen.update()
+  return "battle"

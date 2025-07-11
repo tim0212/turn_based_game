@@ -1,5 +1,18 @@
 import pygame, sys
 
+"""
+git add .
+git commit -m "set"
+git push
+
+github.com/tim0212/turn_based_game.git\screen.py
+github.com/tim0212/turn_based_game.git\main.py
+github.com/tim0212/turn_based_game.git\main_menu.py
+github.com/tim0212/turn_based_game.git\\text.py
+github.com/tim0212/turn_based_game.git\start.py
+github.com/tim0212/turn_based_game.git\game.py
+"""
+
 # 전역 변수 선언
 screen = None
 clock = None
@@ -30,10 +43,6 @@ def init(width=1250, height=None, caption="Turn Game", fps_=60):
   pygame.display.set_caption(caption)
   clock = pygame.time.Clock()
   fps = fps_
-
-def init_display():
-  """scence로 화면을 이동시에 리셋하는 함수"""
-  fill(screen, fill=(0, 0, 0))
 
 def update():
   """코드 활성화 (flip)"""
