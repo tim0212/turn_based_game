@@ -1,3 +1,8 @@
+"""
+git add .
+git commit -m "set"
+git push
+"""
 import pygame
 import screen, start, game, main_menu
 

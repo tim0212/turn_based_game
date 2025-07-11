@@ -1,9 +1,3 @@
-"""
-git add .
-git commit -m "set"
-git push
-"""
-
 # start_screen.py
 import pygame, sys
 import screen
