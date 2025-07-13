@@ -1,7 +1,10 @@
 import pygame
 import screen
 
+
+
 def render(pos: tuple, texts: str, antialiased: bool, color: tuple, display_update=False, centerpos: str = "center"):
+  global width, height, text
   """
   텍스트를 화면에 출력하는 함수
 
@@ -11,10 +14,12 @@ def render(pos: tuple, texts: str, antialiased: bool, color: tuple, display_upda
       antialiased (bool): 안티앨리어싱 적용 여부
       color (tuple): 텍스트 색상 (R, G, B)
       display_update (bool): True면 화면을 배경색으로 초기화
-      centerpos (str): 'center', 'topleft', 'midtop' 등 텍스트 정렬 위치
+      centerpos (str): 'center', 'topleft', 'midtop', centertop 등 텍스트 정렬 위치
   """
   font = pygame.font.SysFont(None, 48)
   text = font.render(texts, antialiased, color)
+  width = text.get_width()
+  height = text.get_height()
   rect = text.get_rect()
 
   # 정렬 방식 적용
@@ -26,4 +31,4 @@ def render(pos: tuple, texts: str, antialiased: bool, color: tuple, display_upda
   if display_update:
     screen.fill((20, 20, 50))  # 사용자 정의 fill 함수 사용
 
-  screen.screen.blit(text, rect)
+  return screen.surface.blit(text, rect)
