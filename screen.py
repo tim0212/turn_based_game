@@ -1,17 +1,5 @@
 import pygame, sys
-
-"""
-git add .
-git commit -m "set"
-git push
-
-github.com/tim0212/turn_based_game.git\screen.py
-github.com/tim0212/turn_based_game.git\main.py
-github.com/tim0212/turn_based_game.git\main_menu.py
-github.com/tim0212/turn_based_game.git\\text.py
-github.com/tim0212/turn_based_game.git\start.py
-github.com/tim0212/turn_based_game.git\game.py
-"""
+import time
 
 # 전역 변수 선언
 clock = None
@@ -24,6 +12,8 @@ cy = y // 2
 fps = 60
 
 def init(width=1250, height=None, caption="Turn Game", fps_=60):
+  global start_time
+  start_time = time.time()
   """_summary_
 
   시작시에 화면 init
@@ -51,6 +41,9 @@ def update():
 def exit():
     """저장 및 게임 종료"""
     print("save code will input here")
+    end_time = time.time()
+    running_time = start_time - end_time
+    print("게임이 돌아간 시간 : {} ========================".format(running_time))
     pygame.quit()
     sys.exit()
 

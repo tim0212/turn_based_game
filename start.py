@@ -1,12 +1,11 @@
-import pygame
-import screen
-import text
+import pygame, time
+import screen, text
 
 # 전역 상태
 selected_index = 0
 highlight_y = screen.cx  # 부드럽게 이동할 y 좌표 나중에 자연스레 만드아
 
-#ㅏㅏㅏㅏㅏㅏㅏ 어려우럽ㄷ저레ㅐ베래ㅔㅐㅓㅔ댛뷷ㅍㅂ ㅓㅍ베ㅐㄷㄿㅂ더ㅜㅐㅍ ㅂㄹㄷ배ㅑㅈ ㅇ펭ㄹ
+import time
 
 def update(events):
   global selected_index, highlight_y
