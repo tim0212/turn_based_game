@@ -2,15 +2,10 @@ import pygame
 import screen, text
 
 selected_index = 0
-a = 1
-
-# 선택 강조 박스 위치 (y값만 보간)
-selected_index = 0
-highlight_y = 0  # 테두리 y 위치 (부드럽게 움직이는 y좌표)
-
+highlight_y = 0  # 강조 박스 y위치 (부드럽게 이동할 대상)
 
 def update(events):
-  global selected_index, a  # 선택된 메뉴 상태 유지
+  global selected_index, highlight_y
 
   # 매 프레임 목표 위치 계산
   target_y = screen.cy + selected_index * 60 - 30
@@ -66,5 +61,10 @@ def update(events):
 
     # 최종 텍스트 출력
     text.render(pos, option, True, color, centerpos="center")
+
+    # target 위치 계산 + 부드럽게 이동
+    target_y = screen.cy + selected_index * 60 - 30
+    speed = 0.2
+    highlight_y += (target_y - highlight_y) * speed
 
   return "start_menu"
