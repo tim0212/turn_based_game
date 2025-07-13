@@ -3,7 +3,14 @@ import screen
 
 
 
-def render(pos: tuple, texts: str, antialiased: bool, color: tuple, display_update=False, centerpos: str = "center"):
+def render(
+ pos: tuple,
+ texts: str,
+ antialiased: bool,
+ color: tuple,
+ display_update: bool = False,
+ centerpos: str = "center",
+ return_rect_only: bool = False):
   global width, height, text
   """
   텍스트를 화면에 출력하는 함수

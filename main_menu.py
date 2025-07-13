@@ -6,7 +6,7 @@ import text
 def update(events):
   for event in events:
     if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE):
-      return "exit"
+      return "main"
     elif event.type == pygame.KEYDOWN:
       if event.key == pygame.K_1:
         return "battle"

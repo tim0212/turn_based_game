@@ -9,10 +9,8 @@ def update(events):
 
   menu_options = ["-> Start Game", "# Settings", "? Help", "X Exit"]
 
-  pygame.draw.rect(screen.surface, (255, 255, 255), (200 + 1 * 60, 200 + 4 * 60))
-
   for event in events:
-    if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE):
+    if event.type == pygame.QUIT:
       return "exit"
     elif event.type == pygame.KEYDOWN:
       if event.key == pygame.K_UP:
@@ -29,6 +27,25 @@ def update(events):
   screen.fill((20, 20, 50))
   for i, option in enumerate(menu_options):
     color = (255, 255, 0) if i == selected_index else (150, 150, 150)
-    text.render((screen.cx, 200 + i * 60), option, True, color, centerpos="centertop")
+    pos = (screen.cx, screen.cy + i * 60 - 30)
+
+    # 텍스트 렌더링 및 위치 계산만 (화면 출력은 안함)
+    rect = text.render(pos, option, True, color, centerpos="center", return_rect_only=True)
+
+    # 사각형 테두리 그리기 (선택된 메뉴만)
+    if i == selected_index:
+      padding = 10
+      bordered_rect = pygame.Rect(
+        rect.left - padding,
+        rect.top - padding,
+        rect.width + padding * 2,
+        rect.height + padding * 2
+      )
+      pygame.draw.rect(screen.surface, (255, 255, 0), bordered_rect, 3)  # 두께 3의 노란색 테두리
+
+    text.render((screen.cx, screen.cy / 3), "Turn_based game", True, (255, 255, 255), centerpos="center")
+
+    # 최종 텍스트 출력
+    text.render(pos, option, True, color, centerpos="center")
 
   return "start_menu"
