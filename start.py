@@ -1,24 +1,20 @@
 import pygame
-import screen, text
+import screen
+import text
 
+# 전역 상태
 selected_index = 0
-highlight_y = 0  # 강조 박스 y위치 (부드럽게 이동할 대상)
+highlight_y = screen.cx  # 부드럽게 이동할 y 좌표 나중에 자연스레 만드아
+
+#ㅏㅏㅏㅏㅏㅏㅏ 어려우럽ㄷ저레ㅐ베래ㅔㅐㅓㅔ댛뷷ㅍㅂ ㅓㅍ베ㅐㄷㄿㅂ더ㅜㅐㅍ ㅂㄹㄷ배ㅑㅈ ㅇ펭ㄹ
 
 def update(events):
   global selected_index, highlight_y
 
-  # 매 프레임 목표 위치 계산
-  target_y = screen.cy + selected_index * 60 - 30
-
-  # 부드럽게 이동 (선형 보간)
-  speed = 0.2  # 낮을수록 더 부드럽게
-  highlight_y += (target_y - highlight_y) * speed
-
-
   menu_options = ["-> Start Game", "# Settings", "? Help", "X Exit"]
 
   for event in events:
-    if event.type == pygame.QUIT:
+    if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE):
       return "exit"
     elif event.type == pygame.KEYDOWN:
       if event.key == pygame.K_UP:
@@ -29,42 +25,53 @@ def update(events):
         if selected_index == 0: return "main"
         elif selected_index == 1: return "setting"
         elif selected_index == 2: return "help"
-        elif selected_index == 3: return"exit"
+        elif selected_index == 3: return "exit"
 
-  # 텍스트 출력 등 그리기
+  # 화면 초기화
   screen.fill((20, 20, 50))
 
-  main_rect = pygame.Rect(screen.cx - 150, screen.cy - 100, 300, 350)
-  pygame.draw.rect(screen.surface, (255, 255, 255), main_rect, 3)
+  # 타이틀
+  text.render((screen.cx, screen.cy / 3), "Turn_based game", True, (255, 255, 255), centerpos="center")
 
+  # 메뉴 좌표 기준
+  base_y = screen.cy
+  option_rects = []
+
+  # 메뉴 텍스트 렌더링
   for i, option in enumerate(menu_options):
     color = (255, 255, 0) if i == selected_index else (150, 150, 150)
-    pos = (screen.cx, screen.cy + i * 60 - 10)
-
-    # 텍스트 렌더링 및 위치 계산만 (화면 출력은 안함)
+    pos = (screen.cx, base_y + i * 60 - 30)
     rect = text.render(pos, option, True, color, centerpos="center", return_rect_only=True)
-
-    # 사각형 테두리 그리기 (선택된 메뉴만)
-    if i == selected_index:
-      padding = 10
-      bordered_rect = pygame.Rect(
-        rect.left - padding,
-        highlight_y - rect.height // 2 - padding,
-        rect.width + padding * 2,
-        rect.height + padding * 2
-      )
-    pygame.draw.rect(screen.surface, (255, 255, 0), bordered_rect, 3)
-
-    pygame.draw.rect(screen.surface, (255, 255, 0), bordered_rect, 3)  # 두께 3의 노란색 테두리
-
-    text.render((screen.cx, screen.cy / 3), "Turn_based game", True, (255, 255, 255), centerpos="center")
-
-    # 최종 텍스트 출력
     text.render(pos, option, True, color, centerpos="center")
+    option_rects.append(rect)
 
-    # target 위치 계산 + 부드럽게 이동
-    target_y = screen.cy + selected_index * 60 - 30
-    speed = 0.2
-    highlight_y += (target_y - highlight_y) * speed
+  # 선택 박스 부드럽게 이동
+  target_y = option_rects[selected_index].centery
+  speed = 0.2
+  highlight_y += (target_y - highlight_y) * speed
+
+  # 노란색 강조 박스
+  selected_rect = option_rects[selected_index]
+  padding = 10
+  bordered_rect = pygame.Rect(
+    selected_rect.left - padding,
+    highlight_y - selected_rect.height // 2 - padding,
+    selected_rect.width + padding * 2,
+    selected_rect.height + padding * 2
+  )
+  pygame.draw.rect(screen.surface, (255, 255, 0), bordered_rect, 3)
+
+  # 전체 메뉴 박스 (흰색 테두리)
+  menu_top = option_rects[0].top - 20
+  menu_bottom = option_rects[-1].bottom + 20
+  menu_height = menu_bottom - menu_top
+  menu_width = 300
+  menu_rect = pygame.Rect(
+    screen.cx - menu_width // 2,
+    menu_top,
+    menu_width,
+    menu_height
+  )
+  pygame.draw.rect(screen.surface, (255, 255, 255), menu_rect, 3)
 
   return "start_menu"
