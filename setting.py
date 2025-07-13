@@ -1,7 +1,5 @@
-# game.py
 import pygame
-import screen
-import text
+import screen, text
 
 def update(events):
   for event in events:
@@ -9,9 +7,9 @@ def update(events):
       return "exit"
     elif event.type == pygame.KEYDOWN:
       if event.key == pygame.K_ESCAPE:
-        return "main"
+        return "start_menu"
 
   screen.fill((10, 10, 20))
-  text.render((screen.cx, screen.cy), "BATTLE MODE", True, (255, 100, 100))
+  text.render((screen.cx, screen.cy), "setting", True, (255, 100, 100))
 
-  return "battle"
+  return "setting"

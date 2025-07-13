@@ -9,4 +9,5 @@ github.com/tim0212/turn_based_game.git\main_menu.py
 github.com/tim0212/turn_based_game.git\text.py
 github.com/tim0212/turn_based_game.git\start.py
 github.com/tim0212/turn_based_game.git\game.py
+github.com/tim0212/turn_based_game.git\charactor.py
 """

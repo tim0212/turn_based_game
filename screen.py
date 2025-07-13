@@ -14,7 +14,6 @@ github.com/tim0212/turn_based_game.git\game.py
 """
 
 # 전역 변수 선언
-screen = None
 clock = None
 
 # 화면 관련 전역 설정
