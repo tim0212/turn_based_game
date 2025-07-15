@@ -1,7 +1,6 @@
 # game.py
 import pygame
-import screen
-import text
+import screen, text
 from charactor import Charactor
 
 # 캐릭터 생성
@@ -15,7 +14,7 @@ def update(events):
 
   for event in events:
     if event.type == pygame.QUIT:
-      return "quit"
+      return "exit"
     elif event.type == pygame.KEYDOWN:
       if event.key == pygame.K_ESCAPE:
         return "main"

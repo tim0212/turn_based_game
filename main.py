@@ -1,5 +1,5 @@
 import pygame
-import screen, start, main_menu, game, setting, help
+import screen, start, main_scene, game, setting, help
 
 pygame.init()
 screen.init()
@@ -12,7 +12,7 @@ while True:
   if scene == "start_menu":
     scene = start.update(events)
   elif scene == "main":
-    scene = main_menu.update(events)
+    scene = main_scene.update(events)
   elif scene == "setting":
     scene = setting.update(events)
   elif scene == "help":
@@ -20,6 +20,8 @@ while True:
 
   elif scene == "battle":
     scene = game.update(events)
+    if scene == "main":
+      main_scene.knockback_from_enemy(main_scene.player_rect, main_scene.enemy_rect, distance=5)
 
   elif scene == "exit":
     screen.exit()

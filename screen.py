@@ -1,5 +1,5 @@
 import pygame, sys
-import time
+import time, math
 
 # 전역 변수 선언
 clock = None
@@ -42,12 +42,12 @@ def exit():
     """저장 및 게임 종료"""
     print("save code will input here")
     end_time = time.time()
-    running_time = start_time - end_time
-    print("게임이 돌아간 시간 : {} ========================".format(running_time))
+    running_time = (end_time - start_time)
+    print("게임이 돌아간 시간 : {}초 ========================".format(math.ceil(running_time)))
     pygame.quit()
     sys.exit()
 
-def fill(top_color : tuple = (255, 255, 255), bottom_color : tuple = (0, 0, 0), fill : tuple = None):
+def fill(fill : tuple = None, top_color : tuple = (255, 255, 255), bottom_color : tuple = (0, 0, 0)):
   """_summary_
 
   단색은 fill = (0, 0, 0)식으로 적어라

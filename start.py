@@ -46,7 +46,7 @@ def update(events):
 
   # 선택 박스 부드럽게 이동
   target_y = option_rects[selected_index].centery
-  speed = 0.2
+  speed = 0.5
   highlight_y += (target_y - highlight_y) * speed
 
   # 노란색 강조 박스
@@ -71,6 +71,9 @@ def update(events):
     menu_width,
     menu_height
   )
+
   pygame.draw.rect(screen.surface, (255, 255, 255), menu_rect, 3)
+  text.render((pos[0] - 170, target_y - 15), "↑", True, (255, 255, 255), unicode=True, size=25)
+  text.render((pos[0] - 170, target_y + 15), "↓", True, (255, 255, 255), unicode=True, size=25)
 
   return "start_menu"
