@@ -1,7 +1,7 @@
 # game.py
 import pygame
 import screen, text
-from charactor import Charactor
+from sprites.character import Charactor
 
 # 캐릭터 생성
 player = Charactor("Hero", 100, 20)

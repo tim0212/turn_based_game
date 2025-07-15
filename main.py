@@ -1,5 +1,5 @@
 import pygame
-import screen, start, main_scene, game, setting, help
+import screen, start, main_scene, ingame, setting, help
 
 pygame.init()
 screen.init()
@@ -19,9 +19,9 @@ while True:
     scene = help.update(events)
 
   elif scene == "battle":
-    scene = game.update(events)
+    scene = ingame.update(events)
     if scene == "main":
-      main_scene.knockback_from_enemy(main_scene.player_rect, main_scene.enemy_rect, distance=5)
+      scene = main_scene.knockback_from_enemy(main_scene.player_rect, main_scene.enemy_rect, distance=5)
 
   elif scene == "exit":
     screen.exit()

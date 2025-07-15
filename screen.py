@@ -12,7 +12,7 @@ cy = y // 2
 fps = 60
 
 def init(width=1250, height=None, caption="Turn Game", fps_=60):
-  global start_time
+  global start_time, surface
   start_time = time.time()
   """_summary_
 

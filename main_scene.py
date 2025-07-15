@@ -1,11 +1,26 @@
 import pygame
-import screen, object
+import screen, sprites
 
-player_rect = pygame.Rect(screen.cx, screen.cy, 32, 32)
 enemy_rect = pygame.Rect(300, 300, 32, 32)
 speed = 5
 
 obstacle_sprites = pygame.sprite.Group()
+visible_sprites = pygame.sprite.Group()
+
+tile = None
+trailblazer = None
+player_rect = None
+
+done = 0
+
+def ObjectInit():
+  global player_rect, trailblazer, tile
+  if tile == None:
+    tile = sprites.tiles.TileObject((screen.cx, screen.cy), obstacle_sprites, "tile")
+
+  if trailblazer == None:
+    trailblazer = sprites.trailblazer.Trailblazer((screen.cx, screen.cy), (visible_sprites), "charactor")
+    player_rect = trailblazer.ReturnTheRect()  # ✅ 인스턴스로 호출
 
 def knockback_from_enemy(player_rect, enemy_rect, distance=5):
   if player_rect.centerx < enemy_rect.centerx:
@@ -17,8 +32,16 @@ def knockback_from_enemy(player_rect, enemy_rect, distance=5):
     player_rect.y -= (enemy_rect.height + distance)
   else:
     player_rect.y += (enemy_rect.height + distance)
+  return "main"
 
 def update(events):
+  global done, trailblazer
+
+  if done == 0:
+    ObjectInit()
+    done = 1
+
+  player_rect = trailblazer.rect  # 매 프레임 동기화!
 
   for event in events:
     if event.type == pygame.QUIT:
@@ -40,13 +63,17 @@ def update(events):
 
   # 충돌 체크
   if player_rect.colliderect(enemy_rect):
+    print(player_rect)
+    print(enemy_rect)
+    print("was colliderected")
     return "battle"
 
   # 화면 그리기
   screen.fill((0, 100, 0))  # 초록색 배경
 
-  #pygame.draw.rect(screen.surface, (0, 0, 255), player_rect)  # 파란색 플레이어 나중에 캐릭터로 변환해야함
-  object.tiles.TileObject((0, 0), obstacle_sprites, "tile", screen.surface, player_rect)
+  #pygame.draw.rect(screen.surface, (0, 0, 255), player_rect) # 플레이어 더미
   pygame.draw.rect(screen.surface, (255, 0, 0), enemy_rect)   # 빨간색 적 나중에 class로 만들 예정
+  obstacle_sprites.draw(screen.surface)
+  visible_sprites.draw(screen.surface)
 
   return "main"
