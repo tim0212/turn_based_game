@@ -1,5 +1,6 @@
 import pygame
-import screen, sprites
+import sprites
+from setting import screen
 
 enemy_rect = pygame.Rect(300, 300, 32, 32)
 speed = 5
@@ -20,7 +21,7 @@ def ObjectInit():
 
   if trailblazer == None:
     trailblazer = sprites.trailblazer.Trailblazer((screen.cx, screen.cy), (visible_sprites), "charactor")
-    player_rect = trailblazer.ReturnTheRect()  # ✅ 인스턴스로 호출
+    player_rect = trailblazer.ReturnTheRect()
 
 def knockback_from_enemy(player_rect, enemy_rect, distance=5):
   if player_rect.centerx < enemy_rect.centerx:
@@ -41,7 +42,7 @@ def update(events):
     ObjectInit()
     done = 1
 
-  player_rect = trailblazer.rect  # 매 프레임 동기화!
+  player_rect = trailblazer.rect
 
   for event in events:
     if event.type == pygame.QUIT:

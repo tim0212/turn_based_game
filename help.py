@@ -1,5 +1,5 @@
 import pygame
-import screen, text
+from setting import screen, text
 
 def update(events):
   for event in events:

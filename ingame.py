@@ -1,6 +1,6 @@
 # game.py
 import pygame
-import screen, text
+from setting import screen, text
 from sprites.character import Charactor
 
 # 캐릭터 생성

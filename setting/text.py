@@ -1,7 +1,5 @@
 import pygame
-import screen
-
-
+from setting import screen
 
 def render(
  pos: tuple,

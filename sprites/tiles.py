@@ -1,5 +1,5 @@
 import os, pygame
-import screen
+from setting import screen, text
 
 class TileObject(pygame.sprite.Sprite):
   def __init__(self, pos, groups, sprite_type, surface=None, player_rect=None):

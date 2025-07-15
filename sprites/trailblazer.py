@@ -18,7 +18,7 @@ class Trailblazer(pygame.sprite.Sprite, CharacterBase):
         self.image = pygame.transform.scale(raw_image, (32, 32))
       except:
         self.image = pygame.Surface((32, 32))
-        self.image.fill((0, 0, 255))  # 파란색 기본 플레이어
+        self.image.fill((0, 0, 255))
 
     self.rect = self.image.get_rect(topleft=pos)
     self.hitbox = self.rect.inflate(0, -10)

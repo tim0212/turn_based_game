@@ -1,5 +1,6 @@
 import pygame
-import screen, start, main_scene, ingame, setting, help
+import start, main_scene, ingame, setting_menu, help
+from setting import screen
 
 pygame.init()
 screen.init()
@@ -14,7 +15,7 @@ while True:
   elif scene == "main":
     scene = main_scene.update(events)
   elif scene == "setting":
-    scene = setting.update(events)
+    scene = setting_menu.update(events)
   elif scene == "help":
     scene = help.update(events)
 

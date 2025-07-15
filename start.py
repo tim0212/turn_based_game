@@ -1,5 +1,5 @@
 import pygame, time
-import screen, text
+from setting import screen, text
 
 # 전역 상태
 selected_index = 0
