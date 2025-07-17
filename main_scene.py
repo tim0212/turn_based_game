@@ -1,27 +1,47 @@
-import pygame
-import sprites
+import pygame, os
+import sprites.character
+import sprites, sprites.trailblazer, sprites.object, sprites.character
 from setting import screen
 
-enemy_rect = pygame.Rect(300, 300, 32, 32)
-speed = 5
+speed = 2
 
 obstacle_sprites = pygame.sprite.Group()
-visible_sprites = pygame.sprite.Group()
+tile_sprites = pygame.sprite.Group()
+character_sprites = pygame.sprite.Group()
 
 tile = None
-trailblazer = None
 player_rect = None
+player = None
+enemy_rect = None
+
+tile_image_cache = sprites.object.tile_image_cache
 
 done = 0
 
-def ObjectInit():
-  global player_rect, trailblazer, tile
-  if tile == None:
-    tile = sprites.tiles.TileObject((screen.cx, screen.cy), obstacle_sprites, "tile")
+def create_map():
+  global player, enemy
 
-  if trailblazer == None:
-    trailblazer = sprites.trailblazer.Trailblazer((screen.cx, screen.cy), (visible_sprites), "charactor")
-    player_rect = trailblazer.ReturnTheRect()
+  from sprites.settings import WORLD_MAP, tile_size, TILE_TYPES
+
+  for row_index, row in enumerate(WORLD_MAP):
+    for col_index, cell in enumerate(row):
+      x = col_index * tile_size
+      y = row_index * tile_size
+      pos = (x, y)
+
+      items = cell if isinstance(cell, list) else [cell]
+
+      for item in items:
+        if item in ["x", "r"]:
+          sprites.object.TileObject(pos, tile_sprites, "tile", item)
+        if item in ["w"]:
+          sprites.object.ObstacleObject(pos, tile_sprites, "obstacle", item)
+
+        if item == "p":
+          player = sprites.trailblazer.Trailblazer(pos, character_sprites, "charactor")
+
+        if item == ["e"]:
+          enemy = sprites.character.Entry(pos, character_sprites, "enemy")
 
 def knockback_from_enemy(player_rect, enemy_rect, distance=5):
   if player_rect.centerx < enemy_rect.centerx:
@@ -35,22 +55,25 @@ def knockback_from_enemy(player_rect, enemy_rect, distance=5):
     player_rect.y += (enemy_rect.height + distance)
   return "main"
 
+def ObjectInit():
+  create_map()
+
 def update(events):
-  global done, trailblazer
+  global done, player_rect
 
   if done == 0:
     ObjectInit()
+
     done = 1
 
-  player_rect = trailblazer.rect
+  enemy_rect = enemy.rect
+  player_rect = player.rect
 
   for event in events:
     if event.type == pygame.QUIT:
       return "exit"
-
-    if event.type == pygame.KEYDOWN:
-      if event.key == pygame.K_ESCAPE:
-        return "start_menu"
+    elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
+      return "start_menu"
 
   keys = pygame.key.get_pressed()
   if keys[pygame.K_LEFT]:
@@ -62,19 +85,13 @@ def update(events):
   if keys[pygame.K_DOWN]:
     player_rect.y += speed
 
-  # 충돌 체크
   if player_rect.colliderect(enemy_rect):
-    print(player_rect)
-    print(enemy_rect)
-    print("was colliderected")
     return "battle"
 
-  # 화면 그리기
-  screen.fill((0, 100, 0))  # 초록색 배경
-
-  #pygame.draw.rect(screen.surface, (0, 0, 255), player_rect) # 플레이어 더미
-  pygame.draw.rect(screen.surface, (255, 0, 0), enemy_rect)   # 빨간색 적 나중에 class로 만들 예정
+  screen.fill((0, 0, 0))
+  tile_sprites.draw(screen.surface)
   obstacle_sprites.draw(screen.surface)
-  visible_sprites.draw(screen.surface)
+  character_sprites.draw(screen.surface)
 
   return "main"
+

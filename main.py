@@ -22,7 +22,7 @@ while True:
   elif scene == "battle":
     scene = ingame.update(events)
     if scene == "main":
-      scene = main_scene.knockback_from_enemy(main_scene.player_rect, main_scene.enemy_rect, distance=5)
+      scene = main_scene.knockback_from_enemy(main_scene.player.rect, main_scene.enemy.rect, distance=5)
 
   elif scene == "exit":
     screen.exit()

@@ -1,2 +1,2 @@
-from . import tiles
+from . import object
 from . import trailblazer

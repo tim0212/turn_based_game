@@ -1,10 +1,10 @@
 import os, pygame
-from .character_base import CharacterBase
+from .character import CharactorBase
 
-class Trailblazer(pygame.sprite.Sprite, CharacterBase):
+class Trailblazer(pygame.sprite.Sprite, CharactorBase):
   def __init__(self, pos, groups, sprite_type, surface=None):
     pygame.sprite.Sprite.__init__(self, groups)
-    CharacterBase.__init__(self, name="Trailblazer", hp=100, atk=20)
+    CharactorBase.__init__(self, name="Trailblazer", hp=100, atk=20)
 
     self.sprite_type = sprite_type
 
@@ -23,5 +23,5 @@ class Trailblazer(pygame.sprite.Sprite, CharacterBase):
     self.rect = self.image.get_rect(topleft=pos)
     self.hitbox = self.rect.inflate(0, -10)
 
-  def ReturnTheRect(self):
+  def get_rect(self):
     return self.rect
