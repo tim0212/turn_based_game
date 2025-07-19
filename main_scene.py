@@ -1,6 +1,5 @@
 import pygame, os
-import sprites.character
-import sprites, sprites.trailblazer, sprites.object, sprites.character
+import sprites, sprites.character_info.player, sprites.object, sprites.character_info.character
 from setting import screen
 
 speed = 2
@@ -19,7 +18,7 @@ tile_image_cache = sprites.object.tile_image_cache
 done = 0
 
 def create_map():
-  global player, enemy
+  global player, enemy, checkpoint_position
 
   from sprites.settings import WORLD_MAP, tile_size, TILE_TYPES
 
@@ -35,15 +34,16 @@ def create_map():
         if item in ["x", "r"]:
           sprites.object.TileObject(pos, tile_sprites, "tile", item)
         if item in ["w"]:
-          sprites.object.ObstacleObject(pos, tile_sprites, "obstacle", item)
+          sprites.object.ObstacleObject(pos, obstacle_sprites, "obstacle", item)
 
         if item == "p":
-          player = sprites.trailblazer.Trailblazer(pos, character_sprites, "charactor")
+          player = sprites.character_info.player.Trailblazer(pos, character_sprites, "charactor")
+          checkpoint_position = pos
 
-        if item == ["e"]:
-          enemy = sprites.character.Entry(pos, character_sprites, "enemy")
+        if item == "e":
+          enemy = sprites.character_info.character.Entry(pos, character_sprites, "enemy")
 
-def knockback_from_enemy(player_rect, enemy_rect, distance=5):
+def knockback_from_enemy(player_rect, enemy_rect, distance=10):
   if player_rect.centerx < enemy_rect.centerx:
     player_rect.x -= (enemy_rect.width + distance)
   else:
@@ -55,8 +55,18 @@ def knockback_from_enemy(player_rect, enemy_rect, distance=5):
     player_rect.y += (enemy_rect.height + distance)
   return "main"
 
+def handle_battle_result(result):
+  if result in ["lose", "run"]:
+    player.rect.topleft = checkpoint_position
+  elif result == "win":
+    knockback_from_enemy(player.rect, enemy.rect, distance=20)
+
 def ObjectInit():
+  global camera
+
+  from camera import Camera
   create_map()
+  camera = Camera(player.rect, screen.surface.get_size())
 
 def update(events):
   global done, player_rect
@@ -75,23 +85,40 @@ def update(events):
     elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
       return "start_menu"
 
+
   keys = pygame.key.get_pressed()
+    # X축 이동 먼저
+  original_x = player.rect.x
+
   if keys[pygame.K_LEFT]:
-    player_rect.x -= speed
+    player.rect.x -= speed
   if keys[pygame.K_RIGHT]:
-    player_rect.x += speed
+    player.rect.x += speed
+
+  # x축 충돌 처리
+  if pygame.sprite.spritecollide(player, obstacle_sprites, False):
+    player.rect.x = original_x  # x 이동 취소
+
+  # Y축 이동
+  original_y = player.rect.y
+
   if keys[pygame.K_UP]:
-    player_rect.y -= speed
+    player.rect.y -= speed
   if keys[pygame.K_DOWN]:
-    player_rect.y += speed
+    player.rect.y += speed
+
+  # y축 충돌 처리
+  if pygame.sprite.spritecollide(player, obstacle_sprites, False):
+    player.rect.y = original_y  # y 이동 취소
 
   if player_rect.colliderect(enemy_rect):
     return "battle"
 
+  camera.update()
   screen.fill((0, 0, 0))
-  tile_sprites.draw(screen.surface)
-  obstacle_sprites.draw(screen.surface)
-  character_sprites.draw(screen.surface)
+  camera.draw_group(screen.surface, tile_sprites)
+  camera.draw_group(screen.surface, obstacle_sprites)
+  camera.draw_group(screen.surface, character_sprites)
 
   return "main"
 

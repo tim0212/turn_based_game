@@ -1,2 +1,2 @@
 from . import object
-from . import trailblazer
+from .character_info import player

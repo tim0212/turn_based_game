@@ -1,7 +1,7 @@
 import os, pygame
 from .character import CharactorBase
 
-class Trailblazer(pygame.sprite.Sprite, CharactorBase):
+class Trailblazer(pygame.sprite.Sprite, CharactorBase): #이름 대충 지음.
   def __init__(self, pos, groups, sprite_type, surface=None):
     pygame.sprite.Sprite.__init__(self, groups)
     CharactorBase.__init__(self, name="Trailblazer", hp=100, atk=20)
@@ -9,7 +9,7 @@ class Trailblazer(pygame.sprite.Sprite, CharactorBase):
     self.sprite_type = sprite_type
 
     if surface:
-      # 외부에서 surface를 넘기면 강제로 크기 제한
+      # 외부에서 surface를 넘기면 강제로 크기 제한 나중에 지울예정 (아마도)
       self.image = pygame.transform.scale(surface, (32, 32))
     else:
       try:
