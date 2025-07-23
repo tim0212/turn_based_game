@@ -20,9 +20,11 @@ while True:
     scene = help.update(events)
 
   elif scene == "battle":
-    scene = ingame.update(events)
+    scene, result, debug = ingame.update(events)
     if scene == "main":
-      main_scene.handle_battle_result(result=ingame.result)
+      ingame.result = "battle"
+      ingame.scene = "battle"
+      main_scene.done = 0
 
   elif scene == "exit":
     screen.exit()

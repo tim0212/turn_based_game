@@ -27,8 +27,6 @@ def render(
   if unicode == True:
     font = pygame.font.SysFont("malgungothic", size)
   text = font.render(texts, antialiased, color)
-  width = text.get_width()
-  height = text.get_height()
   rect = text.get_rect()
 
   # 정렬 방식 적용

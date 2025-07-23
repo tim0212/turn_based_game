@@ -2,7 +2,7 @@ import pygame, os
 import sprites, sprites.character_info.player, sprites.object, sprites.character_info.character
 from setting import screen
 
-speed = 2
+speed = 5
 
 obstacle_sprites = pygame.sprite.Group()
 tile_sprites = pygame.sprite.Group()
@@ -16,11 +16,12 @@ enemy_rect = None
 tile_image_cache = sprites.object.tile_image_cache
 
 done = 0
+a = 0
 
 def create_map():
   global player, enemy, checkpoint_position
 
-  from sprites.settings import WORLD_MAP, tile_size, TILE_TYPES
+  from sprites.settings import WORLD_MAP, tile_size
 
   for row_index, row in enumerate(WORLD_MAP):
     for col_index, cell in enumerate(row):
@@ -33,17 +34,18 @@ def create_map():
       for item in items:
         if item in ["x", "r"]:
           sprites.object.TileObject(pos, tile_sprites, "tile", item)
-        if item in ["w"]:
+        elif item in ["w"]:
           sprites.object.ObstacleObject(pos, obstacle_sprites, "obstacle", item)
 
-        if item == "p":
-          player = sprites.character_info.player.Trailblazer(pos, character_sprites, "charactor")
+        elif item == "p":
+          player = sprites.character_info.player.DummyTraveler(pos, character_sprites, "charactor")
           checkpoint_position = pos
 
-        if item == "e":
-          enemy = sprites.character_info.character.Entry(pos, character_sprites, "enemy")
+        elif item == "e":
+          enemy = sprites.character_info.character.DummyEntry(pos, character_sprites, "enemy")
 
 def knockback_from_enemy(player_rect, enemy_rect, distance=10):
+  original = player_rect.copy()
   if player_rect.centerx < enemy_rect.centerx:
     player_rect.x -= (enemy_rect.width + distance)
   else:
@@ -53,19 +55,30 @@ def knockback_from_enemy(player_rect, enemy_rect, distance=10):
     player_rect.y -= (enemy_rect.height + distance)
   else:
     player_rect.y += (enemy_rect.height + distance)
-  return "main"
+
+  if pygame.sprite.spritecollide(player, obstacle_sprites, False):
+    player_rect = original
 
 def handle_battle_result(result):
   if result in ["lose", "run"]:
     player.rect.topleft = checkpoint_position
+    print(player_rect)
+    return "main"
   elif result == "win":
-    knockback_from_enemy(player.rect, enemy.rect, distance=20)
+    print(player_rect)
+    knockback_from_enemy(player.rect, enemy.rect, distance=5)
+    print(player_rect)
+    return "main"
+  else:
+    return "battle"
 
 def ObjectInit():
-  global camera
-
+  global camera, a
   from camera import Camera
-  create_map()
+
+  if a == 0:
+    create_map()
+    a = 1
   camera = Camera(player.rect, screen.surface.get_size())
 
 def update(events):
@@ -77,7 +90,6 @@ def update(events):
     done = 1
 
   enemy_rect = enemy.rect
-  player_rect = player.rect
 
   for event in events:
     if event.type == pygame.QUIT:
@@ -87,7 +99,6 @@ def update(events):
 
 
   keys = pygame.key.get_pressed()
-    # X축 이동 먼저
   original_x = player.rect.x
 
   if keys[pygame.K_LEFT]:
@@ -95,11 +106,9 @@ def update(events):
   if keys[pygame.K_RIGHT]:
     player.rect.x += speed
 
-  # x축 충돌 처리
   if pygame.sprite.spritecollide(player, obstacle_sprites, False):
-    player.rect.x = original_x  # x 이동 취소
+    player.rect.x = original_x
 
-  # Y축 이동
   original_y = player.rect.y
 
   if keys[pygame.K_UP]:
@@ -107,11 +116,10 @@ def update(events):
   if keys[pygame.K_DOWN]:
     player.rect.y += speed
 
-  # y축 충돌 처리
   if pygame.sprite.spritecollide(player, obstacle_sprites, False):
-    player.rect.y = original_y  # y 이동 취소
+    player.rect.y = original_y
 
-  if player_rect.colliderect(enemy_rect):
+  if player.rect.colliderect(enemy_rect):
     return "battle"
 
   camera.update()

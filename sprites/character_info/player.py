@@ -1,10 +1,9 @@
 import os, pygame
 from .character import CharactorBase
 
-class Trailblazer(pygame.sprite.Sprite, CharactorBase): #이름 대충 지음.
+class DummyTraveler(pygame.sprite.Sprite):
   def __init__(self, pos, groups, sprite_type, surface=None):
     pygame.sprite.Sprite.__init__(self, groups)
-    CharactorBase.__init__(self, name="Trailblazer", hp=100, atk=20)
 
     self.sprite_type = sprite_type
 
@@ -25,3 +24,6 @@ class Trailblazer(pygame.sprite.Sprite, CharactorBase): #이름 대충 지음.
 
   def get_rect(self):
     return self.rect
+class Traveler(CharactorBase):
+  def __init__(self, name = "여행객", hp = 210, atk = 90, speed = 20):
+    super().__init__(name, hp, atk, speed)
