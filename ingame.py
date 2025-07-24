@@ -27,7 +27,7 @@ def update(events):
         scene = "main"
   #========================================battle_sys========================================
   # battle진입시 player에게 선공을 준다. star rail과 비슷하게 ATBsys로 사용 gauge가 100%에 도달시 행동포인트의 변화등을 조절 AIsys는 따른 파일에 만들어볼 예정
-  battle_display.running()
+  battle_display.running(events)
 
   scene = main_scene.handle_battle_result(result)
 

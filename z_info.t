@@ -9,7 +9,7 @@ github.com/tim0212/turn_based_game.git\main_menu.py
 github.com/tim0212/turn_based_game.git\text.py
 github.com/tim0212/turn_based_game.git\start.py
 github.com/tim0212/turn_based_game.git\game.py
-github.com/tim0212/turn_based_game.git\charactor.py 
+github.com/tim0212/turn_based_game.git\charactor.py
 
 github.com/tim0212/turn_based_game.git
 
@@ -25,7 +25,7 @@ main.py
 │   ├─ 플레이어 이동
 │   ├─ 적 충돌 시 → "battle"
 
-├─ scene == "battle" → game.update(events)
+├─ scene == "battle" → BattleDisplay.running(events)
 │   ├─ 플레이어 턴: A키로 공격
 │   ├─ 적 자동 반격
 │   └─ HP 감소 및 로그 표시
@@ -33,10 +33,8 @@ main.py
 파일구조
 object/
 ├── tiles.py                  ← TileObject 정의
-├── charactorname.py          ← 캐릭터 클래스
-├── ...
-├── enemyname.py              ← 적 클래스
-├── ...
+├── player.py                 ← 플래이어가 사용하는 캐릭터 클래스-
+├── character.py              ← 적 클래스
 ├── boss.py                   ← Boss 캐릭터 등
 └── __init__.py               ← from . import 캐릭터, 적 등으로 연결
 

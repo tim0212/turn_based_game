@@ -27,3 +27,5 @@ class DummyTraveler(pygame.sprite.Sprite):
 class Traveler(CharactorBase):
   def __init__(self, name = "여행객", hp = 210, atk = 90, speed = 20):
     super().__init__(name, hp, atk, speed)
+
+    

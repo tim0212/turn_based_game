@@ -40,6 +40,14 @@ class Entry(CharactorBase):
   def __init__(self, name = "앤트리", hp = 300, atk = 20, speed = 15):
     super().__init__(name, hp, atk, speed)
 
+    try:
+      image_path = os.path.join("image", "enemy.png")
+      raw_image = pygame.image.load(image_path).convert_alpha()
+      Entry_image_cache = pygame.transform.scale(raw_image, (32, 32))
+    except:
+      Entry_image_cache = pygame.Surface((32, 32))
+      Entry_image_cache.fill((100, 100, 100))
+
 dummyenemy2_image_cache = None
 
 class DummyEnemy2(pygame.sprite.Sprite):
