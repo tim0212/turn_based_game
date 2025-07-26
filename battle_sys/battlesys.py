@@ -9,7 +9,7 @@ from sprites.character_info.player import *
 
 #적 정보를 저장할때 ["name". "name2"]이런 식으로 하고 character로 넣어버리면 사용 가능
 
-def limte(val, min_val: int, max_val: int):
+def limit(val, min_val: int, max_val: int):
   return max(min_val, min(val, max_val))
 
 class ATBSys:
@@ -21,7 +21,7 @@ class ATBSys:
 
   def update(self):
     for char in self.characters:
-      self.gauges[char] = limte(self.gauges[char] + char.speed, 0, 100)
+      self.gauges[char] = limit(self.gauges[char] + char.speed, 0, 100)
       if self.gauges[char] >= 100 and char not in self.wait:
         self.wait.append(char)  # char 객체를 넣어야 함
 
@@ -37,13 +37,13 @@ class BattleDisplay(ATBSys):
 
   def keyevent(self, events):
     for event in events:
-      if event.type == pygame.KEYDOWN: 
+      if event.type == pygame.KEYDOWN:
         if event.key in [pygame.K_q, pygame.K_w, pygame.K_e, pygame.K_r]:
           print("스킬 입력됨")
           self.key_press = True
 
-  def running(self, event):
-    self.keyevent(event)
+  def running(self, events):
+    self.keyevent(events)
 
     self.update()
     gauge_text = "\n".join([f"{char.name}: {self.gauges[char]}" for char in self.characters])

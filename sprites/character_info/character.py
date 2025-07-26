@@ -24,7 +24,7 @@ class DummyEntry(pygame.sprite.Sprite):
 
     if dummyEntry_image_cache is None:
       try:
-        image_path = os.path.join("image", "enemy.png")
+        image_path = os.path.join("image", "character_img", "enemy.png")
         raw_image = pygame.image.load(image_path).convert_alpha()
         dummyEntry_image_cache = pygame.transform.scale(raw_image, (32, 32))
       except:
@@ -41,7 +41,7 @@ class Entry(CharactorBase):
     super().__init__(name, hp, atk, speed)
 
     try:
-      image_path = os.path.join("image", "enemy.png")
+      image_path = os.path.join("image", "character_img", "enemy.png")
       raw_image = pygame.image.load(image_path).convert_alpha()
       Entry_image_cache = pygame.transform.scale(raw_image, (32, 32))
     except:
@@ -59,7 +59,7 @@ class DummyEnemy2(pygame.sprite.Sprite):
 
     if dummyenemy2_image_cache is None:
       try:
-        image_path = os.path.join("image", "enemy.png")
+        image_path = os.path.join("image", "character_img", "enemy.png")
         raw_image = pygame.image.load(image_path).convert_alpha()
         dummyenemy2_image_cache = pygame.transform.scale(raw_image, (32, 32))
       except:
@@ -72,4 +72,12 @@ class DummyEnemy2(pygame.sprite.Sprite):
 class Enemy2(CharactorBase):
   def __init__(self, name = "적2", hp = 300, atk = 20, speed = 10):
     super().__init__(name, hp, atk, speed)
+
+    try:
+      image_path = os.path.join("image", "character_img", "enemy.png")
+      raw_image = pygame.image.load(image_path).convert_alpha()
+      Entry_image_cache = pygame.transform.scale(raw_image, (32, 32))
+    except:
+      Entry_image_cache = pygame.Surface((32, 32))
+      Entry_image_cache.fill((100, 100, 100))
 
