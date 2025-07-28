@@ -1,21 +1,35 @@
-import sprites.character_info.character as character
-import sprites.character_info.player as player
- 
+from sprites.character_info import character, player
+
+position_dictP = {
+  1 : (160, 250),
+  2 : (160, 350),
+  3 : (160, 450),
+  4 : (160, 550)
+}
+
+position_dictE = {
+  1 : (1250 - (160 + 64), 250),
+  2 : (1250 - (160 + 64), 350),
+  3 : (1250 - (160 + 64), 450),
+  4 : (1250 - (160 + 64), 550)
+}
+
+
 traveler = player.Traveler()
 entry = character.Entry()
 enemy2 = character.Enemy2()
 
 team_dict = {
-  "여행객": traveler,
+  "Traveler": traveler,
 }
 
 enemy_dict = {
-  "앤트리": entry,
-  "적2": enemy2,
+  "Entry": entry,
+  "Enemy2": enemy2,
 }
 
-team_info = ["여행객", None, None, None]
-enemy_info = ["앤트리", "적2"]
+team_info = ["Traveler", None, None, None]
+enemy_info = ["Entry", "Enemy2"]
 
 team_group = []
 enemy_group = []

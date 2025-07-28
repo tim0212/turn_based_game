@@ -1,4 +1,5 @@
 import os, pygame
+from setting import screen
 from .character import CharactorBase
 
 class DummyTraveler(pygame.sprite.Sprite):
@@ -25,7 +26,20 @@ class DummyTraveler(pygame.sprite.Sprite):
   def get_rect(self):
     return self.rect
 class Traveler(CharactorBase):
-  def __init__(self, name = "여행객", hp = 210, atk = 90, speed = 20):
+  def __init__(self, name = "Traveler", hp = 210, atk = 90, speed = 20):
     super().__init__(name, hp, atk, speed)
 
-    
+    try:
+      image_path = os.path.join("image", "player.png")
+      raw_image = pygame.image.load(image_path).convert_alpha()
+      self.image = pygame.transform.scale(raw_image, (32, 32))
+    except:
+      self.image = pygame.Surface((32, 32))
+      self.image.fill((0, 0, 255))
+
+  def anime_update(self, event : str):
+    pass
+
+  def draw(self, pos):
+    screen.surface.blit(self.image, pos)
+    self.draw_hp_barP(pos)

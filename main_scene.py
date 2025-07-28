@@ -1,12 +1,13 @@
 import pygame, os
+from pygame import sprite
 import sprites, sprites.character_info.player, sprites.object, sprites.character_info.character
 from setting import screen
 
 speed = 5
 
-obstacle_sprites = pygame.sprite.Group()
-tile_sprites = pygame.sprite.Group()
-character_sprites = pygame.sprite.Group()
+obstacle_sprites = sprite.Group()
+tile_sprites = sprite.Group()
+character_sprites = sprite.Group()
 
 tile = None
 player_rect = None
@@ -17,6 +18,9 @@ tile_image_cache = sprites.object.tile_image_cache
 
 done = 0
 a = 0
+
+charInfo = sprites.character_info
+objectsprite = sprites.object
 
 def create_map():
   global player, enemy, checkpoint_position
@@ -33,16 +37,16 @@ def create_map():
 
       for item in items:
         if item in ["x", "r"]:
-          sprites.object.TileObject(pos, tile_sprites, "tile", item)
+          objectsprite.TileObject(pos, tile_sprites, "tile", item)
         elif item in ["w"]:
-          sprites.object.ObstacleObject(pos, obstacle_sprites, "obstacle", item)
+          objectsprite.ObstacleObject(pos, obstacle_sprites, "obstacle", item)
 
         elif item == "p":
-          player = sprites.character_info.player.DummyTraveler(pos, character_sprites, "charactor")
+          player = charInfo.player.DummyTraveler(pos, character_sprites, "charactor")
           checkpoint_position = pos
 
         elif item == "e":
-          enemy = sprites.character_info.character.DummyEntry(pos, character_sprites, "enemy")
+          enemy = charInfo.character.DummyEntry(pos, character_sprites, "enemy")
 
 def knockback_from_enemy(player_rect, enemy_rect, distance=10):
   original = player_rect.copy()
@@ -56,7 +60,7 @@ def knockback_from_enemy(player_rect, enemy_rect, distance=10):
   else:
     player_rect.y += (enemy_rect.height + distance)
 
-  if pygame.sprite.spritecollide(player, obstacle_sprites, False):
+  if sprite.spritecollide(player, obstacle_sprites, False):
     player_rect = original
 
 def handle_battle_result(result):
@@ -106,7 +110,7 @@ def update(events):
   if keys[pygame.K_RIGHT]:
     player.rect.x += speed
 
-  if pygame.sprite.spritecollide(player, obstacle_sprites, False):
+  if sprite.spritecollide(player, obstacle_sprites, False):
     player.rect.x = original_x
 
   original_y = player.rect.y
@@ -116,7 +120,7 @@ def update(events):
   if keys[pygame.K_DOWN]:
     player.rect.y += speed
 
-  if pygame.sprite.spritecollide(player, obstacle_sprites, False):
+  if sprite.spritecollide(player, obstacle_sprites, False):
     player.rect.y = original_y
 
   if player.rect.colliderect(enemy_rect):

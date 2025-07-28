@@ -10,7 +10,7 @@ scene = "battle"
 team_info = sprites.team
 
 team_info.check()
-battle_display = BattleDisplay(team_info.team_group + team_info.enemy_group)
+battle_display = BattleDisplay(team_info.team_group, team_info.enemy_group)
 print("디버그 - 캐릭터 목록:", team_info.team_group + team_info.enemy_group)
 
 

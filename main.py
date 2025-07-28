@@ -1,4 +1,5 @@
-import pygame
+import pygame, sys, os
+sys.path.append(os.path.dirname(__file__))
 import start, main_scene, ingame, setting_menu, help
 from setting import screen
 
