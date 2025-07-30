@@ -3,12 +3,14 @@ from setting import screen, text
 from setting.math import *
 
 class CharactorBase:
-  def __init__(self, name, hp, atk, speed):
+  def __init__(self, name, hp, atk, speed, tag : str):
+    """tag = \"player\" or \"enemy\""""
     self.name = name
     self.max_hp = hp
     self.hp = hp
     self.atk = atk
     self.speed = speed
+    self.tag = tag
   def __hash__(self):
     return hash(id(self))
   def __eq__(self, other):
@@ -20,10 +22,20 @@ class CharactorBase:
     return self.hp > 0
 
   #HP그림 HP게이지 바 P는 player E는 enemy
-  def draw_hp_barP(self, pos, width=100, height=6):
+  def draw_hp_bar(self, pos, width=100, height=6, tag=None):
+    if tag == None:
+      tag = self.tag
+
     x, y = pos
-    bar_x = x -120
-    bar_y = y + 32
+
+    if tag == "player":
+      bar_x = x -120
+      bar_y = y + 32
+      hp_pos = (pos[0] - 42, pos[1] + 20)
+    elif tag == "enemy":
+      bar_x = x + 55
+      bar_y = y + 32
+      hp_pos = (pos[0] + 55, pos[1] + 20)
 
     pygame.draw.rect(screen.surface, (80, 80, 80), (bar_x, bar_y, width, height))
 
@@ -32,21 +44,7 @@ class CharactorBase:
     hp_width = int(width * hp_ratio)
 
     pygame.draw.rect(screen.surface, (0, 255, 0), (bar_x, bar_y, hp_width, height))
-    text.render((pos[0] - 42, pos[1] + 20), str(limit(self.hp, 0, inf)), False, (255, 255, 255), centerpos= "topleft", size = 20)
-
-  def draw_hp_barE(self, pos, width=100, height=6):
-    x, y = pos
-    bar_x = x + 55
-    bar_y = y + 32
-
-    pygame.draw.rect(screen.surface, (80, 80, 80), (bar_x, bar_y, width, height))
-
-    # 체력 비율
-    hp_ratio = self.hp / self.max_hp
-    hp_width = int(width * hp_ratio)
-
-    pygame.draw.rect(screen.surface, (0, 255, 0), (bar_x, bar_y, hp_width, height))
-    text.render((pos[0] + 55, pos[1] + 20), str(limit(self.hp, 0, inf)), False, (255, 255, 255), centerpos= "topleft", size = 20)
+    text.render(hp_pos, str(limit(self.hp, 0, inf)), False, (255, 255, 255), centerpos= "topleft", size = 20)
 
 dummyEntry_image_cache = None
 class DummyEntry(pygame.sprite.Sprite):
@@ -71,8 +69,8 @@ class DummyEntry(pygame.sprite.Sprite):
 
     pygame.draw.rect(self.image, (255, 0, 0), self.image.get_rect(), 2)  # 적 테두리
 class Entry(CharactorBase):
-  def __init__(self, name = "Entry", hp = 300, atk = 20, speed = 15):
-    super().__init__(name, hp, atk, speed)
+  def __init__(self, name = "Entry", hp = 300, atk = 20, speed = 15, tag = "enemy"):
+    super().__init__(name, hp, atk, speed, tag)
 
     try:
       image_path = os.path.join("image", "character_img", "enemy.png")
@@ -86,7 +84,7 @@ class Entry(CharactorBase):
 
   def draw(self, pos):
     screen.surface.blit(self.image, pos)
-    self.draw_hp_barE(pos)
+    self.draw_hp_bar(pos)
 
 dummyenemy2_image_cache = None
 class DummyEnemy2(pygame.sprite.Sprite):
@@ -109,8 +107,8 @@ class DummyEnemy2(pygame.sprite.Sprite):
     self.rect = self.image.get_rect(topleft=pos)
     self.hitbox = self.rect.inflate(0, -10)
 class Enemy2(CharactorBase):
-  def __init__(self, name = "Enemy", hp = 300, atk = 20, speed = 10):
-    super().__init__(name, hp, atk, speed)
+  def __init__(self, name = "Enemy", hp = 300, atk = 20, speed = 10, tag = "enemy"):
+    super().__init__(name, hp, atk, speed, tag)
 
     try:
       image_path = os.path.join("image", "character_img", "enemy.png")
@@ -124,4 +122,4 @@ class Enemy2(CharactorBase):
 
   def draw(self, pos):
     screen.surface.blit(self.image, pos)
-    self.draw_hp_barE(pos)
+    self.draw_hp_bar(pos)

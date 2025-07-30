@@ -14,30 +14,39 @@ game_sprites = pygame.sprite.Group()
 class ATBSys:
   def __init__(self, characters):
     self.characters = characters
+    self.sorted_char = sorted((characters[n].speed for n in range(len(characters))), reverse= True)
     self.key_press = False
     self.gauges = {char: 0 for char in self.characters}
     self.name = [char for char in self.characters]
-    self.wait = [] # gauge가 100인 애들 모아두는 곳
+    self.wait = [None] # gauge가 100인 애들 모아두는 곳
     self.anime = False # 캐릭터 턴 진행 완료 표시
 
   # 게이지 활성화 코드
   def update(self, events):
+    self.turn = 1
     event = self.keyevent(events)
+    now_turn = self.sorted_char[self.turn - 1]
+    now_running = None
+    print(now_running)
 
     for char in self.characters:
-      self.gauges[char] = math.limit(self.gauges[char] + char.speed, 0, 100)
+      self.gauges[char] = math.limit(self.gauges[char] + char.speed / 20, 0, 100)
       if self.gauges[char] >= 100 and char not in self.wait:
         self.wait.append(char)
 
     if self.key_press and self.wait:
       self.key_press = False
 
-      now_running = self.wait.pop(0)
-      self.gauges[now_running] = 0
-      print(f"now running :{now_running.name}") # 현재 이벤트를 반환하여 애니매이션을 해야하는 객체
+      wait = self.wait.pop(0)
+      self.gauges[wait] = 0
+      now_running = wait.name
+      print(f"now running : {now_running}") # 현재 이벤트를 반환하여 애니매이션을 해야하는 객체
       self.anime = False
 
-      return now_running, event, None # 현재 턴과 이 턴에서 눌은 키의 eventkey를 반환 None은 debug용a
+      if event:
+        return now_running, now_turn, event, None # 현재 턴과 이 턴에서 눌은 키의 eventkey를 반환 None은 debug용a
+      else:
+        return now_running, now_turn, None
 
     return None, None, None
 
@@ -57,16 +66,21 @@ class BattleDisplay(ATBSys):
         self.key_press = True
         key = pygame.key.name(event.key).upper()
 
+        self.turn += 1
+
         print(key)
         return key
 
   # 캐릭터 돌리는 코드
   def running(self, events):
-    now_running, event, debug = self.update(events)
+    try:
+      now_running, now_turn, key = self.update(events)
+    except:
+      now_running, now_turn, key, debug = self.update(events)
 
-    if event == "0":
-      now_running.hp -= 20 # hp 깍는 코드
-      print("-20")
+    #if key == "0":
+    #  now_running.hp -= 20 # hp 깍는 코드
+    #  print("-20")
 
     # 캐릭터 그리기
     for i, char in enumerate(self.character, start=1):
@@ -78,22 +92,20 @@ class BattleDisplay(ATBSys):
       char.draw(pos)
 
     gauge_text = ", ".join([f"{char.name}: {self.gauges[char]}" for char in self.characters])
-    now_turn = now_running.name if now_running else ""
-
-    mouse_pos = pygame.mouse.get_pos()
-    if event == "LEFT SHIFT":
-      text.render(mouse_pos, str(mouse_pos), False, (255, 255, 255), centerpos="midbottom")
-      print(mouse_pos)
 
     text.render((0, 0), gauge_text, False, (255, 255, 255), centerpos="topleft")
-    text.render((0, 50), now_turn, False, (255, 255, 255), centerpos="topleft")
+    text.render((0, 50), now_turn.name, False, (255, 255, 255), centerpos="topleft")
 
+    mouse_pos = pygame.mouse.get_pos()
+    if key == "LEFT SHIFT":
+      text.render(mouse_pos, str(mouse_pos), False, (255, 255, 255), centerpos="midbottom")
+      print(mouse_pos)
 
     pygame.display.flip()
     screen.clock.tick(screen.fps)
 
-    if now_running and event:
-      now_running.anime_update(event)
+    if now_running:
+      now_running.anime_update(key)
 
 
 

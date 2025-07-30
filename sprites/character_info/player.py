@@ -26,8 +26,8 @@ class DummyTraveler(pygame.sprite.Sprite):
   def get_rect(self):
     return self.rect
 class Traveler(CharactorBase):
-  def __init__(self, name = "Traveler", hp = 210, atk = 90, speed = 20):
-    super().__init__(name, hp, atk, speed)
+  def __init__(self, name = "Traveler", hp = 210, atk = 90, speed = 20, tag = "player"):
+    super().__init__(name, hp, atk, speed, tag)
 
     try:
       image_path = os.path.join("image", "player.png")
@@ -38,8 +38,8 @@ class Traveler(CharactorBase):
       self.image.fill((0, 0, 255))
 
   def anime_update(self, event : str):
-    pass
+    pygame.draw.circle(screen.surface, (255, 255, 255), (961, 567), 10)
 
   def draw(self, pos):
     screen.surface.blit(self.image, pos)
-    self.draw_hp_barP(pos)
+    self.draw_hp_bar(pos)
